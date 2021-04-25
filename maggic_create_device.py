@@ -1,19 +1,27 @@
-# -*- mode: python; python-indent: 4 -*-
+# This module will add new device to the Cisco NSO
+# Version: 1.0
+# Author: Bizhou Duan
+# Copyright 2021, Sparklight ®. All rights reserved
 import argparse
 import ncs
 
+
+# Create parse function to define what arguments is required from user imput
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--name', help='device name', required=True)
-    parser.add_argument('--address', help='device address', required=True)
-    parser.add_argument('--ned', help='device NED ID', required=True)
-    parser.add_argument('--port', help='device port', type=int, default=22)
-    parser.add_argument('--desc', help='device description', default='Device created by maagic_create_device.py')
+    parser.add_argument('--address', help='device ip address', required=True)
+    parser.add_argument('--ned_id', help='device NED ID', required=True)
+    parser.add_argument('--ned_type', help='device NED type, cli/netconf', default='cli')
+    parser.add_argument('--port', help='device port to connect', type=int, default=22)
+    parser.add_argument('--desc', help='device description', default='default')
     parser.add_argument('--auth', help='device authgroup', default='default')
+    parser.add_argument('--state', help='device admin state', default='unlocked')
 
     return parser.parse_args()
 
 
+# main function
 def main(args):
     with ncs.maapi.Maapi() as m:
         with ncs.maapi.Session(m, 'admin', 'python'):
@@ -30,9 +38,9 @@ def main(args):
                     device.port = args.port
                     device.description = args.desc
                     device.authgroup = args.auth
-                    dev_type = device.device_type.cli
-                    dev_type.ned_id = args.ned
-                    device.state.admin_state = 'unlocked'
+                    dev_type = device.device_type.args.ned_type
+                    dev_type.ned_id = args.ned_id
+                    device.state.admin_state = args.state
                     print('Committing the device configuration...')
                     t.apply()
                     print('Device committed!')
