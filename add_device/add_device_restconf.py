@@ -23,15 +23,18 @@ def main():
                'Content-Type': 'application/yang-data+xml'}
 
     # Create a Device in the CDB
-    response = requests.post(base_uri, auth=auth, headers=headers, data=result, verify=False)
+    response = requests.post(
+        base_uri, auth=auth, headers=headers, data=result, verify=False)
     print(response)
     # SSH Fetch-Host-Keys Device
-    response = requests.post(base_uri + "/device=" + hostname + "/ssh/fetch-host-keys",
-                             auth=auth, headers=headers, verify=False)
+    response = requests.post(
+        base_uri + "/device=" + hostname + "/ssh/fetch-host-keys",
+        auth=auth, headers=headers, verify=False)
     print(response)
     # Sync-from Device
-    response = requests.post(base_uri + "/device=" + hostname + "/sync-from",
-                             auth=auth, headers=headers, verify=False)
+    response = requests.post(
+        base_uri + "/device=" + hostname + "/sync-from",
+        auth=auth, headers=headers, verify=False)
     print(response)
 
 
