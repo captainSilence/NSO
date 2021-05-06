@@ -40,7 +40,6 @@ class ServiceCallbacks(Service):
                 svi_template = ncs.template.Template(service)
                 svi_template.apply('svi-intf-template', svi_tvars)
 
-
         vlan_tvars = ncs.template.Variables()
         vlan_tvars.add('VLAN-ID', svi['vlan-id'])
         vlan_template = ncs.template.Template(service)
